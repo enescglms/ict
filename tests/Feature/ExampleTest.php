@@ -7,6 +7,8 @@ use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    /* Saat 04:17 yaptığım her işlemin önce testini yazmak isterdim... */
+
     /**
      * A basic test example.
      */
