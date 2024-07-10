@@ -13,21 +13,22 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class Api
 {
-
     public function orders(OrderListRequest $request)
     {
         try {
-            // FIXME order_no ile de liste çekilebilecek, order_no alanı gönderilmiyorsa tüm siparişler listelenecek.
             $data = OrderListResource::collection(
                 Orders::with([
                     'products',
                     'customer',
                     'status',
                 ])
-                ->where('customer_id', $request->get('customer_id') )
+                ->where('customer_id', $request->get('customer_id'))
+                ->when($request->has('order_no'), function ($query) use ($request) {
+                    $query->where('order_no', $request->get('order_no'));
+                })
                 ->orderBy('id', 'DESC')
                 ->get()
-             );
+            );
 
             return response()->json([
                 'orders' => $data->resolve(),
